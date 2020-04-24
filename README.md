@@ -13,8 +13,7 @@ The login credentials are listed below:
 * Password: .
 
 Note that the password is literally just a period. This should
-make it to switch to superuser access. I would not recommend that sort of
-password for a regular machine however.
+make it easy to switch to superuser access.
 
 After you login, you should be greeted with a bash shell. Type in
 
