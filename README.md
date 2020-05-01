@@ -5,6 +5,22 @@ and customize it to your liking. It'll also go over a bit of kernel compilation.
 
 ## VirtualBox Setup
 
+Before we begin, you must have **at least 6-7 GB of free disk space** available.
+
+The first step is to download the OVA file for the VirtualBox. This is basically
+just a compressed version of the virtual hard drive along with some metadata. 
+It's a 2GB file, so the download might take some time.
+
+https://drive.google.com/open?id=1CR3ot6dPG2KJt3ZMXwKF24Q2Syy4mi-S
+
+After you've acquired the OVA file, you can open VirtualBox. Go to the top left
+of the corner and click on "Import Applicance". It should prompt you to look
+for the OVA file you just downloaded. Just follow the steps as it walks you
+through the import process.
+
+Once you've imported and started the virtual machine successfully, you can
+go ahead and delete the OVA file because it won't be needed anymore.
+
 ## Logging In
 
 The login credentials are listed below:
@@ -23,7 +39,7 @@ echo $SHELL
 
 It should print "/bin/bash". Try `$XDG_SESSION_TYPE` too; it should be "tty".
 
-## Recommended System Update
+## System Update
 
 Once you log in, you should probably update the package list as well as any outdated
 packages.
