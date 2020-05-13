@@ -91,7 +91,7 @@ and back into your original bash shell. The second CTRL-D will log you out of
 your bash shell back into the login screen. When you relog, you should spawn
 a fish shell instead of a bash shell.
 
-## Enabling i3wm
+## Enabling i3
 
 In order for any window manager to work, you first need to do two things:
 1. You need to tell the X server what window manager to run.
@@ -141,9 +141,67 @@ startx
 
 You'll notice some immediate changes.
 
-## Adjusting i3 Key Bindings
+## Learning i3 Key Bindings
 
+Since it's your first time starting i3wm, you'll get a prompt to generate a configuration file.
+Press 'yes' to this question.
 
+Then, you're going to want to select a modifier key. A good choice for this is a Windows key. If
+this isn't suitable for you, then press the down arrow to select the ALT key as your modifier.
+Your modifier key is very important, so choose this wisely (but it is configurable).
+
+After that, you should see just a black screen with a status bar at the bottom. From left to
+right, this displays your workspaces, Internet connection, memory, disk usage, and current time.
+
+Now, let's open a terminal or two! Press the following key combination:
+
+```
+$MOD + $ENTER
+```
+
+where $MOD is the modifier key you selected earlier. Also, don't type the '+', just press ENTER
+with your MOD key.
+
+You should see a white terminal open up. Press $MOD + $ENTER a few more times and a few more
+terminals should pop up. They're all going to fold out horizontally.
+
+Let's try opening a terminal vertically. Press:
+
+```
+$MOD + $ENTER + v
+```
+
+You should notice that, now, all your terminals will open up vertically, even when you leave out 
+the v from your subsequent $MOD + $ENTER commands. Let's try switching back to horizontal mode. Use:
+
+```
+$MOD + $ENTER + h
+```
+
+Now, let's try switching which terminals are in focus. Use:
+
+```
+$MOD + {j,k,l,;}
+```
+
+You'll notice that these are the vim keys shifted over to the right by one. This is intentional.
+A lot of people, however, myself included, prefer to use the direct vim keys + the modifier key
+for changing focus. It's possible to rebind your keys to accomplish this purpose, and we'll do
+that in the next section.
+
+Finally, let's try quitting out all of your terminals. Press:
+
+```
+$MOD + $SHIFT + q
+```
+
+This will exit out of the window currently in focus. Do so repeatedly until all your windows close.
+
+In the next section, we'll explore the i3 configuration file, so we can edit both how it
+looks and what keys we use to perform actions. For a more detailed list of what keybindings you
+can use, go here: https://i3wm.org/docs/userguide.html#_default_keybindings/
+
+## Editing the i3 Config File
 
 ## Kernel Compilation
 
