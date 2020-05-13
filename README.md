@@ -39,112 +39,30 @@ echo $SHELL
 
 It should print "/bin/bash". Try `$XDG_SESSION_TYPE` too; it should be "tty".
 
-## System Update
+## Required Packages
 
-Once you log in, you should probably update the package list as well as any outdated
-packages.
+The following packages should already be present on your system. Most of this guide
+will focus on how to set them up.
+* xorg
+* i3
+* rxvt-unicode
+* zsh
+* polybar
+* asp
 
-Like most other standard Linux distributions, Arch Linux maintains a list of packages that
-have been installed on the system thus far, as well as what versions of these packages
-are present. Updating the system is thus a three-part process:
-
-* First, we have to fetch an updated package list. The Arch Linux maintains a number of
-package list servers, also known as "mirrors", that list all known Arch Linux packages
-and their current versions. When you update, the first thing your Linux distribution will
-do is hit the closest, active mirror to it. Then, for each of your packages, it'll compare
-your version of the package with the most recent version. If they're different, then your
-distribution will know that it needs to fetch a new binary for that package.
-* Once your distribution has an updated package list, it'll go through each of the outdated
-packages and fetch a new binary from the Arch Linux mirrors. `pacman`, Arch Linux's package
-manager, will keep these in a temporary cache on your system.
-* Once all updated packages have been fetched, Arch Linux will decompress and install each
-one.
-
-The cool thing is that you can do all of this with a single command. Try running:
+If, for some reason, you find that one of these packages isn't installed, you can do so
+with:
 ```
-sudo pacman -Syu
+yay -S <PACKAGE NAME>
 ```
 
-Remember: the superuser password is the login password for tse. This may also take some time 
-to complete, depending on how recently I uploaded the OVA file.
-
-## Installing Required Packages
-
-Now, we're gonna get to installing everything we'll need. Run the following command:
-```
-sudo pacman -S i3 xorg rxvt-unicode zsh
-```
-
-If you get any lines prompting for a selection, just press enter. You shouldn't have
-to worry about installing specific packages in a group.
-
-The last step is to install polybar. Polybar isn't found in the main Arch Linux
-package list unfortunately, so if we did `sudo pacman -S polybar`, it would actually
-give us an error indicating that polybar can't be found. Instead, you should run:
-```
-yay -S polybar
-```
-
-Press enter for any prompts that you may get. You may also get some 404's from mirrors
-if they aren't able to be reached but eventually you should land on a working one.
-
-### So ... why doesn't `pacman` know what polybar is?
-
-The `pacman` package manager is designed to communicate with a network of mirrors who
-maintain the **official** Arch Linux repositories for selectively chosen, extremely
-popular packages. i3, xorg, urxvt, and zsh are all examples of very widely used packages,
-so they are officially maintained by the top Arch Linux brass. For more details,
-see https://wiki.archlinux.org/index.php/Official_repositories.
-
-Unfortunately, while polybar is a popular and fairly well-known tool, it simply hasn't
-reach the popularity or maintainability that is necessary for it to be included in the
-official repositories. In fact, many packages similar to polybar also share the same fate.
-The reasons for their exclusion could be complex, or it simply could be that they aren't
-as well-maintained as they should be, or it could be that a package is slated for inclusion
-in the official repository in the far future. In general however, it is difficult for
-a package to be included in the official archives because it has to be trusted by a wide
-network of developers, each of whom must devote time to scrutinizing and maintaining it.
-This is actually the same problem that other distributions face (namely Ubuntu and Debian).
-
-However, just because a package isn't popular doesn't mean it is useless. A select few users
-might actually depend on the package. But if it's not in the official repositories, how do these
-users acquire the package?
-
-The beauty of Arch Linux is that it provides an elegant solution to this problem. Arch Linux
-provides a secondary, unofficial repository called the **AUR or Arch User Repository**. The
-AUR is structured exactly like the official repositories, only that any user can upload
-a package! If a user uploads a package, they become the "maintainer" for that package and
-are responsible for uploading new versions, fixing any build errors, etc. Packages on the
-AUR are still vetted for malware, both by humans and anti-virus software, but they aren't
-scrutinized as heavily as packages on the official repository, so be careful when downloading
-random packages. Fortunately, polybar is a relatively popular package, even on the AUR, so
-it will have a lot of attention given to it to make sure it is ok: https://aur.archlinux.org/packages/?O=0&K=polybar.
-
-As a user, you can sign up on the Arch forums and actually vote for packages that you like.
-Packages that have a high vote count (e.g. high popularity) are personally reviewed by the
-official repository maintainers for potential inclusion. This is how packages are transitioned
-from the unofficial AUR to the official Arch repositories.
-
-The one problem is that the AUR is unreachable by `pacman`. `pacman` only knows about the official
-Arch repositories and not the AUR, which is intentional, because the AUR is considered more unsafe.
-This is why we use what's called an "AUR helper" to download packages from the AUR. In this case,
-the AUR helper we are using is called `yay`, which is what I personally use. `pikaur` is also another
-solid choice. A list of AUR helpers can be found here (there are many, each with their own flaws,
-benefits, design choices, etc.): https://wiki.archlinux.org/index.php/AUR_helpers. 
-
-Another cool thing about AUR helpers is that they usually wrap `pacman`. The AUR is specifically set up
-such that packages that appear on the official repositories don't appear on the AUR. This means that AUR
-helpers usually ping the official repositories first for checking if a package exists and only then
-do they go to the AUR. You could use an AUR helper to essentially do anything that `pacman` does, from
-installing official packages to upgrading your entire system. In fact, the commands are the exact same!
-We could have done:
-
+For reference, you can update the entire system using:
 ```
 yay -Syu
-yay -S i3 xorg rxvt-unicode zsh
 ```
 
-and it would have done the exact same thing as `pacman`. 
+However, I wouldn't recommend doing this, because it could take a long time, depending on
+how many packages have been updated since I last ran the command.
 
 ## Tiling Window Manager Customization
 
@@ -155,3 +73,88 @@ and it would have done the exact same thing as `pacman`.
 ## Shell Customization
 
 ## Kernel Compilation
+
+This last step is intended to teach you about how Arch Linux handles kernel compilation.
+
+The Arch Build System (ABS) is a system for taking source code and compiling it into
+binary packages that `yay` or `pacman` can install. Most packages will provide a PKGBUILD
+file that specifies how their source code is compiled into a package (similar to a Makefile).
+For packages in the official Arch Linux repositories, you can find Git repositories containing
+their PKGBUILDs using a tool called `asp`. We're going to look at the Git repository for Arch's
+**linux** package, which, as you might imagine, contains the Linux PKGBUILD.
+
+First, run:
+
+```
+asp update linux
+```
+
+This will cause `asp` to pull the Linux PKGBUILD repository from the Internet and store it
+somewhere on your computer (in some file cache).
+
+Now, run:
+
+```
+cd ~
+asp checkout linux
+```
+
+You should see the **linux** directory if you run `ls`. Try running `tree linux`. You should get:
+
+```
+linux
+├── repos
+│   ├── core-i686
+│   │   ├── 90-linux.hook
+│   │   ├── config.i686
+│   │   ├── config.x86_64
+│   │   ├── linux.install
+│   │   ├── linux.preset
+│   │   └── PKGBUILD
+│   ├── core-x86_64
+│   │   ├── config
+│   │   ├── PKGBUILD
+│   │   └── sphinx-workaround.patch
+│   └── testing-x86_64
+│       ├── config
+│       ├── PKGBUILD
+│       └── sphinx-workaround.patch
+└── trunk
+    ├── config
+    ├── PKGBUILD
+    └── sphinx-workaround.patch
+
+5 directories, 15 files
+```
+
+There are two main subdirectories of note, **repos** and **trunk**.
+1. **repos** contains the PKGBUILD for Linux, separated by assembly language. Arch Linux suports i686 and x86_64, which is why you see core-1686 and core-x86_64. Your machine is running x86_64, so we're going to use **linux/repos/core-x86_64**.
+2. The **trunk** is used by developers for staging/testing purposes. It's not super relevant to our needs.
+
+Now, let's inspect the x86_64 PKGBUILD. Run:
+```
+cd linux/repos/core-x86_64
+vim PKGBUILD
+```
+
+At the top, you'll see a couple of variables. PKGBUILD's are really just retextured bash
+scripts, so all of the syntax is the same. Some variables of note:
+* pkgbase=linux <sub>The name of the package</sub>
+* pkgver=5.6.11.arch1 <sub>The version of Linux we're using</sub>
+* makedepends=(...) <sub>The packages that the Linux package depends on</sub>
+* validpgpkeys=(...) <sub>Used to verify the integrity of source files</sub>
+* sha256sums=(...) <sub>The checksums for all of the files we're compiling.</sub>
+
+Scrolling down, there are two functions of note, standardized by the PKGBUILD system:
+* prepare() { ... } <sub>Applies patches to Linux, generates a default config</sub>
+* build() { ... } <sub>Runs Linux Makefile build commands</sub>
+
+Now, let's actually use the PKGBUILD to compile Linux. Inside linux/repos/core-x86_64, run:
+
+```
+MAKEFLAGS="-j1" makepkg -sc
+```
+
+The `-s` flag tells `makepkg` to install any missing dependencies (syncdeps), and the `-c` flag tells `makepkg` to clean up after producing a valid binary package. The MAKEFLAGS option is passed to the Linux Makefile, and in turn, "-j1" specifies that Linux should use 1 processor in the compilation phase.
+
+Linux takes a long time to compile, and it will take even longer running on a virtual machine with only one thread compiling. The PKGBUILD will also clone the entire Linux source tree (which is huge), so it's probably not going to finish in your lifetime. Exit out using <CTRL-C>.
