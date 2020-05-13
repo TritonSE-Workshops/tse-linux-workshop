@@ -203,6 +203,79 @@ can use, go here: https://i3wm.org/docs/userguide.html#_default_keybindings/
 
 ## Editing the i3 Config File
 
+The next step is to edit the i3 configuration file. We're going to do things:
+* Swap out {j, k, l, ;} movement keys with {h, j, k, l}
+* Remove the default i3status bar (because it's ugly)
+
+Open **.config/i3/config** in vim and find the section with these commands:
+
+```
+# change focus
+bindsym $mod+j focus left
+bindsym $mod+k focus down
+bindsym $mod+l focus up
+bindsym $mod+semicolon focus right
+```
+
+Change this to:
+
+```
+# change focus
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+```
+
+Next, scroll down and find the section with these commands:
+
+```
+# move focused window
+bindsym $mod+Shift+j move left
+bindsym $mod+Shift+k move down
+bindsym $mod+Shift+l move up
+bindsym $mod+Shift+semicolon move right
+```
+
+Change this to:
+
+```
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+```
+
+Lastly, scroll down even more to find this section:
+
+```
+bar {
+    status_command i3status
+}
+```
+
+Comment this out, so you would get:
+
+```
+# bar {
+#     status_command i3status
+# }
+```
+
+Press the following keys to refresh i3:
+
+```
+$MOD + $SHIFT + r
+```
+
+i3 will now use your updated keybindings. Additionally, the status bar will have been disabled.
+Exit out of vim now. We'll come back to **.config/i3/config** in the near future to enable polybar.
+
+## Configuring and Enabling Polybar
+
+
+
 ## Kernel Compilation
 
 This last step is intended to teach you about how Arch Linux handles kernel compilation.
