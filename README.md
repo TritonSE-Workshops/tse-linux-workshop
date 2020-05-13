@@ -91,11 +91,59 @@ and back into your original bash shell. The second CTRL-D will log you out of
 your bash shell back into the login screen. When you relog, you should spawn
 a fish shell instead of a bash shell.
 
-## Tiling Window Manager Customization
+## Enabling i3wm
 
-## Terminal Emulator Customization
+In order for any window manager to work, you first need to do two things:
+1. You need to tell the X server what window manager to run.
+2. You need to start the X server.
 
-## Desktop Status Bar Customization
+Let's address the first point. To do that, we need to create something 
+called an `xinitrc` file. Type in the following command to get a default 
+xinitrc:
+
+```
+cp /etc/X11/xinit/xinitrc ~/.xinitrc
+```
+
+Let's modify the xinitrc file to tell it to open i3. Open the file in vim via 
+`vim ~/.xinitrc`. Go to the bottom of the xinitrc file and you should see
+the following text:
+
+```
+twm &
+xclock ...
+xterm ...
+xterm ...
+xterm ...
+exec xterm ...
+```
+
+Delete all of those lines and replace it with this:
+
+```
+exec i3
+```
+
+xinitrc is a shell script that the X server will run on start. The default script tells 
+the X server to first load some configuration files (your .Xresources file notably,
+more on this later), and then to start up a window managed called **twm** and then
+open up some **xterm** terminals. We won't be using either twm or xterm, so on our machine
+if you ran the default commands, the X server would just crash because those aren't valid.
+Instead, we want to run the i3 command, which starts the i3 window manager and connects it
+to the X server.
+
+Exit out of vim. Now, we need to start the X server (and the i3 window manager). Type in the
+following command:
+
+```
+startx
+```
+
+You'll notice some immediate changes.
+
+## Adjusting i3 Key Bindings
+
+
 
 ## Kernel Compilation
 
