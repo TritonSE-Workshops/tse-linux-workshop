@@ -64,13 +64,38 @@ yay -Syu
 However, I wouldn't recommend doing this, because it could take a long time, depending on
 how many packages have been updated since I last ran the command.
 
+## Swapping Shells
+
+First, let's stop using the bash shell. Instead, let's try switching to the fish shell.
+fish should already be installed on your machine, so try running it with:
+
+```
+fish
+```
+
+You should notice some immediate improvements. There is now color highlighting, and
+there is also tab-based autocompletion for both commands and directories. Try typing
+in "bas" and pressing TAB. It should allow you to cycle through the various commands
+prefixed with "bas" including "bash". If you press ENTER
+
+Now, let's replace bash with fish for our default shell. Type in:
+
+```
+chsh
+```
+
+When it prompts for the location of your new shell, use `/bin/fish`.
+
+Now, log out by pressing CTRL-D twice. The first CTRL-D will log you out of fish
+and back into your original bash shell. The second CTRL-D will log you out of
+your bash shell back into the login screen. When you relog, you should spawn
+a fish shell instead of a bash shell.
+
 ## Tiling Window Manager Customization
 
 ## Terminal Emulator Customization
 
 ## Desktop Status Bar Customization
-
-## Shell Customization
 
 ## Kernel Compilation
 
