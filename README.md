@@ -44,6 +44,7 @@ It should print "/bin/bash". Try `$XDG_SESSION_TYPE` too; it should be "tty".
 The following packages should already be present on your system. Most of this guide
 will focus on how to set them up.
 * xorg
+* xorg-xinit
 * i3
 * rxvt-unicode
 * zsh
@@ -64,7 +65,98 @@ yay -Syu
 However, I wouldn't recommend doing this, because it could take a long time, depending on
 how many packages have been updated since I last ran the command.
 
+## Kernel Compilation
+
+This step is intended to teach you about how Arch Linux handles kernel compilation.
+
+The Arch Build System (ABS) is a system for taking source code and compiling it into
+binary packages that `yay` or `pacman` can install. Most packages will provide a PKGBUILD
+file that specifies how their source code is compiled into a package (similar to a Makefile).
+For packages in the official Arch Linux repositories, you can find Git repositories containing
+their PKGBUILDs using a tool called `asp`. We're going to look at the Git repository for Arch's
+**linux** package, which, as you might imagine, contains the Linux PKGBUILD.
+
+First, log in and run:
+
+```
+asp update linux
+```
+
+This will cause `asp` to pull the Linux PKGBUILD repository from the Internet and store it
+somewhere on your computer (in some file cache).
+
+Now, run:
+
+```
+cd ~
+asp checkout linux
+```
+
+You should see the **linux** directory if you run `ls`. Try running `tree linux`. You should get:
+
+```
+linux
+├── repos
+│   ├── core-i686
+│   │   ├── 90-linux.hook
+│   │   ├── config.i686
+│   │   ├── config.x86_64
+│   │   ├── linux.install
+│   │   ├── linux.preset
+│   │   └── PKGBUILD
+│   ├── core-x86_64
+│   │   ├── config
+│   │   ├── PKGBUILD
+│   │   └── sphinx-workaround.patch
+│   └── testing-x86_64
+│       ├── config
+│       ├── PKGBUILD
+│       └── sphinx-workaround.patch
+└── trunk
+    ├── config
+    ├── PKGBUILD
+    └── sphinx-workaround.patch
+
+5 directories, 15 files
+```
+
+There are two main subdirectories of note, **repos** and **trunk**.
+1. **repos** contains the PKGBUILD for Linux, separated by assembly language. Arch Linux suports i686 and x86_64, which is why you see core-1686 and core-x86_64. Your machine is running x86_64, so we're going to use **linux/repos/core-x86_64**.
+2. The **trunk** is used by developers for staging/testing purposes. It's not super relevant to our needs.
+
+Now, let's inspect the x86_64 PKGBUILD. Run:
+```
+cd linux/repos/core-x86_64
+vim PKGBUILD
+```
+
+At the top, you'll see a couple of variables. PKGBUILD's are really just retextured bash
+scripts, so all of the syntax is the same. Some variables of note:
+* pkgbase=linux <sub>The name of the package</sub>
+* pkgver=5.6.11.arch1 <sub>The version of Linux we're using</sub>
+* makedepends=(...) <sub>The packages that the Linux package depends on</sub>
+* validpgpkeys=(...) <sub>Used to verify the integrity of source files</sub>
+* sha256sums=(...) <sub>The checksums for all of the files we're compiling.</sub>
+
+Scrolling down, there are two functions of note, standardized by the PKGBUILD system:
+* prepare() { ... } <sub>Applies patches to Linux, generates a default config</sub>
+* build() { ... } <sub>Runs Linux Makefile build commands</sub>
+
+Now, let's actually use the PKGBUILD to compile Linux. Inside linux/repos/core-x86_64, run:
+
+```
+MAKEFLAGS="-j1" makepkg -sc
+```
+
+The `-s` flag tells `makepkg` to install any missing dependencies (syncdeps), and the `-c` flag tells `makepkg` to clean up after producing a valid binary package. The MAKEFLAGS option is passed to the Linux Makefile, and in turn, "-j1" specifies that Linux should use 1 processor in the compilation phase.
+
+Linux takes a long time to compile, and it will take even longer running on a virtual machine with only one thread compiling. The PKGBUILD will also clone the entire Linux source tree (which is huge), so it's probably not going to finish in your lifetime. Exit out using CTRL-C.
+
 ## Swapping Shells
+
+The next steps will cover basic customization for Linux. We'll start by changing shells, and then
+we'll move on to setting up a tiling window manager and status bar, and we'll end with improving
+the display of the terminal emulator.
 
 First, let's stop using the bash shell. Instead, let's try switching to the fish shell.
 fish should already be installed on your machine, so try running it with:
@@ -274,91 +366,34 @@ Exit out of vim now. We'll come back to **.config/i3/config** in the near future
 
 ## Configuring and Enabling Polybar
 
+TODO
 
+## Modifying .Xresources to Improve urxvt
 
-## Kernel Compilation
+TODO
 
-This last step is intended to teach you about how Arch Linux handles kernel compilation.
+## More Configuration Resources
 
-The Arch Build System (ABS) is a system for taking source code and compiling it into
-binary packages that `yay` or `pacman` can install. Most packages will provide a PKGBUILD
-file that specifies how their source code is compiled into a package (similar to a Makefile).
-For packages in the official Arch Linux repositories, you can find Git repositories containing
-their PKGBUILDs using a tool called `asp`. We're going to look at the Git repository for Arch's
-**linux** package, which, as you might imagine, contains the Linux PKGBUILD.
+There is a lot more you can do in terms of customization; we've really just covered the basics.
+The hope is that this tutorial will provide you with a starting point from which it is possible
+to build off of.
 
-First, run:
+The following links go more in detail about each utility and how to customize them even more:
+* https://i3wm.org/docs/userguide.html
+* https://github.com/polybar/polybar/wiki
 
-```
-asp update linux
-```
+The Arch Linux wiki is also a good place to refer to. It's saved my life on multiple occasions.
+* https://wiki.archlinux.org/index.php/I3
+* https://wiki.archlinux.org/index.php/Rxvt-unicode
+* https://wiki.archlinux.org/index.php/polybar
+* https://wiki.archlinux.org/index.php/fish
 
-This will cause `asp` to pull the Linux PKGBUILD repository from the Internet and store it
-somewhere on your computer (in some file cache).
+Lastly, I would encourage you to check out these YouTube videos/channels.
+* https://www.youtube.com/watch?v=j1I63wGcvU4 (ricing guide)
+* https://www.youtube.com/channel/UC2eYFnH61tmytImy1mTYvhA (Luke Smith)
 
-Now, run:
+For inspiration, see /r/unixporn on Reddit.
+* https://www.reddit.com/r/unixporn
 
-```
-cd ~
-asp checkout linux
-```
+Have fun!
 
-You should see the **linux** directory if you run `ls`. Try running `tree linux`. You should get:
-
-```
-linux
-├── repos
-│   ├── core-i686
-│   │   ├── 90-linux.hook
-│   │   ├── config.i686
-│   │   ├── config.x86_64
-│   │   ├── linux.install
-│   │   ├── linux.preset
-│   │   └── PKGBUILD
-│   ├── core-x86_64
-│   │   ├── config
-│   │   ├── PKGBUILD
-│   │   └── sphinx-workaround.patch
-│   └── testing-x86_64
-│       ├── config
-│       ├── PKGBUILD
-│       └── sphinx-workaround.patch
-└── trunk
-    ├── config
-    ├── PKGBUILD
-    └── sphinx-workaround.patch
-
-5 directories, 15 files
-```
-
-There are two main subdirectories of note, **repos** and **trunk**.
-1. **repos** contains the PKGBUILD for Linux, separated by assembly language. Arch Linux suports i686 and x86_64, which is why you see core-1686 and core-x86_64. Your machine is running x86_64, so we're going to use **linux/repos/core-x86_64**.
-2. The **trunk** is used by developers for staging/testing purposes. It's not super relevant to our needs.
-
-Now, let's inspect the x86_64 PKGBUILD. Run:
-```
-cd linux/repos/core-x86_64
-vim PKGBUILD
-```
-
-At the top, you'll see a couple of variables. PKGBUILD's are really just retextured bash
-scripts, so all of the syntax is the same. Some variables of note:
-* pkgbase=linux <sub>The name of the package</sub>
-* pkgver=5.6.11.arch1 <sub>The version of Linux we're using</sub>
-* makedepends=(...) <sub>The packages that the Linux package depends on</sub>
-* validpgpkeys=(...) <sub>Used to verify the integrity of source files</sub>
-* sha256sums=(...) <sub>The checksums for all of the files we're compiling.</sub>
-
-Scrolling down, there are two functions of note, standardized by the PKGBUILD system:
-* prepare() { ... } <sub>Applies patches to Linux, generates a default config</sub>
-* build() { ... } <sub>Runs Linux Makefile build commands</sub>
-
-Now, let's actually use the PKGBUILD to compile Linux. Inside linux/repos/core-x86_64, run:
-
-```
-MAKEFLAGS="-j1" makepkg -sc
-```
-
-The `-s` flag tells `makepkg` to install any missing dependencies (syncdeps), and the `-c` flag tells `makepkg` to clean up after producing a valid binary package. The MAKEFLAGS option is passed to the Linux Makefile, and in turn, "-j1" specifies that Linux should use 1 processor in the compilation phase.
-
-Linux takes a long time to compile, and it will take even longer running on a virtual machine with only one thread compiling. The PKGBUILD will also clone the entire Linux source tree (which is huge), so it's probably not going to finish in your lifetime. Exit out using CTRL-C.
