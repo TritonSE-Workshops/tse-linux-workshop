@@ -415,56 +415,23 @@ configuration file. Instead, it borrows file called **.Xresources** to set its c
 scheme. Right now, your .Xresources file does not exist, so urxvt just defaults to its
 most primitive settings.
 
-Let's give urxvt some better colors. Open your .Xresources file using vim and paste in
-the following text.
+Let's give urxvt some better colors and a font overhaul. Run the following command
+to fetch a better .Xresources for URxvt:
 
 ```
-*.foreground:  #dedede
-*.background:  #121212
-*.cursorColor: #ffa560
-!
-! Black
-*.color0:      #929292
-*.color8:      #bdbdbd
-!
-! Red
-*.color1:      #e27373
-*.color9:      #ffa1a1
-!
-! Green
-*.color2:      #94b979
-*.color10:     #bddeab
-!
-! Yellow
-*.color3:      #ffba7b
-*.color11:     #ffdca0
-!
-! Blue
-*.color4:      #97bedc
-*.color12:     #b1d8f6
-!
-! Magenta
-*.color5:      #e1c0fa
-*.color13:     #fbdaff
-!
-! Cyan
-*.color6:      #00988e
-*.color14:     #1ab2a8
-!
-! White
-*.color7:      #dedede
-*.color15:     #ffffff
-!
-! Bold, Italic, Underline
-*.colorBD:     #ffffff
 ```
 
-This is the jellybeans colorscheme put into Xresources form. Save the file, quit
-out of urxvt via $MOD + Shift + q and then re-open urxvt using $MOD + Enter. 
+This will give URxvt the **Source Code Pro** font as well as the **jellybeans**
+colorscheme. You must exit and re-open your terminal to see the new changes.
 
-TODO: Change font
+Lastly, let's inspect the .Xresources. You'll notice a few things:
 
-TODO: Enable copy-pasting
+* Lines starting with ! are comments.
+* Lines starting with URxvt. are URxvt-specific changes. Only URxvt will recognize these settings.
+* Lines starting with *. are recognized by all programs using the .Xresources file.
+
+URxvt is not the only program that uses .Xresources files. polybar and vim can both use 
+the .Xresources file to fetch colors, and other terminal emulators like xterm use it as well.
 
 ## More Configuration Resources
 
