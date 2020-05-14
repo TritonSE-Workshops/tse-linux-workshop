@@ -419,6 +419,13 @@ Let's give urxvt some better colors and a font overhaul. Run the following comma
 to fetch a better .Xresources for URxvt:
 
 ```
+curl -sL https://bit.ly/2WULIEs > .Xresources
+```
+
+Then, instruct the X server to reload its copy of Xresources:
+
+```
+xrdb .Xresources
 ```
 
 This will give URxvt the **Source Code Pro** font as well as the **jellybeans**

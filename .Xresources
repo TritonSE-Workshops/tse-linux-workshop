@@ -1,4 +1,4 @@
-URxvt.font: xft:Source Code Pro:size=12
+URxvt.font: xft:Source Code Pro:size=10
 
 *.foreground:  #dedede
 *.background:  #121212
