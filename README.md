@@ -366,7 +366,43 @@ Exit out of vim now. We'll come back to **.config/i3/config** in the near future
 
 ## Configuring and Enabling Polybar
 
-TODO
+In the last section, we disabled i3's default status bar. We're now going to enable polybar,
+which is an improved version of the status bar.
+
+First, change into the home directory and copy over the default polybar config like so:
+```
+cd ~
+mkdir .config/polybar
+cp /usr/share/doc/polybar/config .config/polybar
+```
+
+This will place polybar's default config in the **.config/polybar** folder.
+
+Unlike i3's status bar, polybar must be enabled via a shell script. This shell script
+will kill all previous instances of polybar before starting any new instances. Using
+vim, open **.config/polybar/launch.sh** (a new file) and paste in:
+
+```bash
+#!/bin/bash
+killall -q polybar
+polybar example &
+```
+
+Then, save and exit out of vim. Mark the launch script as executable using:
+```
+chmod u+x .config/polybar/launch.sh
+```
+
+The final step is telling i3 that it should load polybar on startup. To do that,
+open the **.config/i3/config** file and paste in the following line at the end
+of the file:
+
+```
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+```
+
+Then, restart i3 using $MOD + $SHIFT + R. If all goes well, you should notice a
+much prettier status bar at the top.
 
 ## Modifying .Xresources to Improve urxvt
 
