@@ -11,7 +11,7 @@ The first step is to download the OVA file for the VirtualBox. This is basically
 just a compressed version of the virtual hard drive along with some metadata. 
 It's a 2GB file, so the download might take some time.
 
-https://drive.google.com/open?id=1CR3ot6dPG2KJt3ZMXwKF24Q2Syy4mi-S
+https://drive.google.com/open?id=1DQkchIvSY1LtLQvotqh9c_qjU5Nw3Dqf
 
 After you've acquired the OVA file, you can open VirtualBox. Go to the top left
 of the corner and click on "Import Applicance". It should prompt you to look
