@@ -406,7 +406,65 @@ much prettier status bar at the top.
 
 ## Modifying .Xresources to Improve urxvt
 
-TODO
+The one thing we have left to configure is urxvt. Right now, you'll notice it looks
+quite ugly: it uses a low-resolution monospace font, the background's entirely white,
+the colors don't look right, etc.
+
+We're going to fix that. Unlike i3 and polybar, urxvt doesn't actually have its own
+configuration file. Instead, it borrows file called **.Xresources** to set its color
+scheme. Right now, your .Xresources file does not exist, so urxvt just defaults to its
+most primitive settings.
+
+Let's give urxvt some better colors. Open your .Xresources file using vim and paste in
+the following text.
+
+```
+*.foreground:  #dedede
+*.background:  #121212
+*.cursorColor: #ffa560
+!
+! Black
+*.color0:      #929292
+*.color8:      #bdbdbd
+!
+! Red
+*.color1:      #e27373
+*.color9:      #ffa1a1
+!
+! Green
+*.color2:      #94b979
+*.color10:     #bddeab
+!
+! Yellow
+*.color3:      #ffba7b
+*.color11:     #ffdca0
+!
+! Blue
+*.color4:      #97bedc
+*.color12:     #b1d8f6
+!
+! Magenta
+*.color5:      #e1c0fa
+*.color13:     #fbdaff
+!
+! Cyan
+*.color6:      #00988e
+*.color14:     #1ab2a8
+!
+! White
+*.color7:      #dedede
+*.color15:     #ffffff
+!
+! Bold, Italic, Underline
+*.colorBD:     #ffffff
+```
+
+This is the jellybeans colorscheme put into Xresources form. Save the file, quit
+out of urxvt via $MOD + Shift + q and then re-open urxvt using $MOD + Enter. 
+
+TODO: Change font
+
+TODO: Enable copy-pasting
 
 ## More Configuration Resources
 
