@@ -415,8 +415,10 @@ configuration file. Instead, it borrows file called **.Xresources** to set its c
 scheme. Right now, your .Xresources file does not exist, so urxvt just defaults to its
 most primitive settings.
 
-Let's give urxvt some better colors and a font overhaul. Run the following command
-to fetch a better .Xresources for URxvt:
+Let's give urxvt some better colors and a font overhaul. We'll also remove the
+ugly vertical scrollbar on the left and fix up some other scrolling properties.
+
+Run the following command to fetch a better .Xresources for URxvt:
 
 ```
 curl -sL https://bit.ly/2WULIEs > .Xresources
